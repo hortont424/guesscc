@@ -4,6 +4,7 @@ import os
 import magic
 from subprocess import Popen, PIPE
 from collections import defaultdict
+from glob import glob
 
 ms = magic.open(magic.MAGIC_NONE)
 ms.load()
@@ -31,7 +32,7 @@ def file_is_library(filename):
 
     return False
 
-def generate_symbol_table(libpaths):
+def generate_symbol_table(libpaths, frameworkpaths):
     symbolTable = defaultdict(set)
 
     for libpath in libpaths:
@@ -51,7 +52,20 @@ def generate_symbol_table(libpaths):
                 for symbol in symbols:
                     symbolTable[symbol].add(libname)
 
+    for frameworkpath in frameworkpaths:
+        for filename in glob(os.path.join(frameworkpath, "*.framework")):
+            (frameworkname, extension) = os.path.splitext(os.path.basename(filename))
+            libfilename = os.path.join(filename, "Versions", "Current", frameworkname)
+
+            if not file_is_library(libfilename):
+                continue
+
+            symbols = list_library_symbols(libfilename)
+
+            for symbol in symbols:
+                symbolTable[symbol].add("FRAMEWORK"+frameworkname)
+
     return symbolTable
 
 if __name__ == "__main__":
-    print generate_symbol_table(["/usr/lib", "/usr/local/lib"])
+    print generate_symbol_table(["/usr/lib", "/usr/local/lib"], ["/System/Library/Frameworks", "/Library/Frameworks"])

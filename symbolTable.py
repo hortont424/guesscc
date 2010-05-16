@@ -128,7 +128,7 @@ def generate_symbol_table(libpaths, frameworkpaths):
     return symbolTable
 
 def generate_default_symbol_table():
-    libpaths = ["/usr/lib", "/usr/local/lib"]#, "/opt/local/lib"]
+    libpaths = ["/usr/lib", "/usr/local/lib", "/opt/local/lib"]
     frameworkpaths = ["/System/Library/Frameworks", "/Library/Frameworks",
         os.path.expanduser("~/Library/Frameworks")]
 

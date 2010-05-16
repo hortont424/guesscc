@@ -1,15 +1,18 @@
 #!/usr/bin/env python
 
 from generateSymbolTable import generate_default_symbol_table
-from scanner import scan_source_file
+from scanner import scan_source_files
+from glob import glob
 
-filename = "symbolScanner.c"
+filenames = ["symbolScanner.c"]
+filenames = glob("/Users/hortont/Desktop/particles/*.c")
 
 symbolTable = generate_default_symbol_table()
+(wantSymbols, haveSymbols) = scan_source_files(filenames)
 neededLibs = set()
 
-for symbol in scan_source_file(filename):
-    if symbol.startswith("__builtin"):
+for symbol in wantSymbols:
+    if symbol in haveSymbols:
         continue
 
     libsContaining = symbolTable["_" + symbol]

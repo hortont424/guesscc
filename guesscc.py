@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 from symbolTable import Library, Framework
 from chooseLibraries import choose_libraries
 
@@ -9,8 +10,8 @@ filenames = ["/Users/hortont/Desktop/abgr.c"]
 
 (neededLibs, missingSymbols) = choose_libraries(filenames)
 
-print
-for symbol in missingSymbols:
-    print "Can't find symbol '{0}'.".format(symbol)
-print
-print " ".join([lib.generate_args() for lib in neededLibs])
+compilercmd = "gcc "
+compilercmd += " ".join([lib.generate_args() for lib in neededLibs]) + " "
+compilercmd += " ".join(filenames)
+
+os.system(compilercmd)

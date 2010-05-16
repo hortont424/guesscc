@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from generateSymbolTable import generate_default_symbol_table
+from generateSymbolTable import generate_default_symbol_table, Library, Framework
 from scanner import scan_source_files
 from glob import glob
 
@@ -19,6 +19,15 @@ for symbol in wantSymbols:
 
     if len(libsContaining) == 0:
         print "Can't find symbol '{0}'.".format(symbol)
+
+    if len(libsContaining) > 1:
+        print "Conflict for symbol '{0}':".format(symbol), libsContaining
+        libnames = [lib.name for lib in libsContaining]
+        if "System" in libnames:
+            libsContaining = set([Library("System")])
+        else:
+            libsContaining = set([libsContaining[0]])
+        print "Choosing:", libsContaining
 
     neededLibs |= libsContaining
 

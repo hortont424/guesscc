@@ -10,7 +10,7 @@ def scan_source_file(filename):
     haveSymbols = set()
 
     for sym in scan:
-        if sym[1:].startswith("__builtin"):
+        if sym[1:].startswith("__builtin") or sym[1:].startswith("__inline"):
             continue
         elif sym[0] == "+":
             haveSymbols.add(sym[1:])

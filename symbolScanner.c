@@ -47,8 +47,8 @@ int main(int argc, char ** argv)
     filename = argv[1];
     idx = clang_createIndex(1, 1);
     // TODO: fixme, obvious
-    char * args[] = {"-I/opt/local/include", "-I/Users/hortont/src/particles/Libraries", "-I/Users/hortont/Desktop/particles"};
-    tu = clang_createTranslationUnitFromSourceFile(idx, filename, 3, args, 0, NULL);
+    const char * args[] = {"-I/opt/local/include"};
+    tu = clang_createTranslationUnitFromSourceFile(idx, filename, 1, args, 0, NULL);
     cur = clang_getTranslationUnitCursor(tu);
 
     clang_visitChildren(cur, foundChild, strdup(filename));

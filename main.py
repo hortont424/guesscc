@@ -4,7 +4,6 @@ from generateSymbolTable import generate_default_symbol_table
 from scanner import scan_source_file
 
 filename = "symbolScanner.c"
-filename = "/Users/hortont/src/particles/Libraries/libcomputer/COBuffer.c"
 
 symbolTable = generate_default_symbol_table()
 neededLibs = set()

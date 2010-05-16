@@ -10,6 +10,9 @@ symbolTable = generate_symbol_table(["/usr/lib", "/usr/local/lib"], ["/System/Li
 neededLibs = set()
 
 for symbol in scan_source_file(filename):
+    if symbol.startswith("__builtin"):
+        continue
+
     libsContaining = symbolTable["_" + symbol]
 
     if len(libsContaining) == 0:

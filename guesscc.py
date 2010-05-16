@@ -5,8 +5,6 @@ import sys
 from symbolTable import Library, Framework
 from chooseLibraries import choose_libraries
 
-#filenames = ["symbolScanner.c"]
-#filenames = glob("/Users/hortont/Desktop/particles/*.c")
 filenames = sys.argv[1:]
 
 (neededLibs, missingSymbols) = choose_libraries(filenames)

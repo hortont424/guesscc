@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-# nm -g -U -j -f -A -m /usr/lib/libssl.dylib
-
 import os
 import magic
 from subprocess import Popen, PIPE
@@ -55,4 +53,5 @@ def generate_symbol_table(libpaths):
 
     return symbolTable
 
-print generate_symbol_table(["/usr/lib", "/usr/local/lib"])
+if __name__ == "__main__":
+    print generate_symbol_table(["/usr/lib", "/usr/local/lib"])

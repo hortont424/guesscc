@@ -1,0 +1,3 @@
+LDFLAGS = -lclang
+
+all: symbolScanner

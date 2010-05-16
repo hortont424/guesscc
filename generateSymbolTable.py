@@ -64,6 +64,23 @@ def file_is_library(filename):
 
     return False
 
+def library_symbols(filename):
+    symbolTable = defaultdict(set)
+
+    if os.path.islink(filename):
+        return None
+
+    if not file_is_library(filename):
+        return None
+
+    libname = libname_from_filename(filename)
+    symbols = list_library_symbols(filename)
+
+    for symbol in symbols:
+        symbolTable[symbol].add(Library(libname))
+
+    return symbolTable
+
 def generate_symbol_table(libpaths, frameworkpaths):
     symbolTable = defaultdict(set)
 
@@ -71,18 +88,13 @@ def generate_symbol_table(libpaths, frameworkpaths):
         for (root, subdirs, files) in os.walk(libpath):
             for file in files:
                 filename = os.path.join(root, file)
+                libsymbols = library_symbols(filename)
 
-                if os.path.islink(filename):
+                if not libsymbols:
                     continue
 
-                if not file_is_library(filename):
-                    continue
-
-                libname = libname_from_filename(filename)
-                symbols = list_library_symbols(filename)
-
-                for symbol in symbols:
-                    symbolTable[symbol].add(Library(libname))
+                for sym in libsymbols:
+                    symbolTable[sym] |= libsymbols[sym]
 
     for frameworkpath in frameworkpaths:
         for filename in glob(os.path.join(frameworkpath, "*.framework")):
@@ -96,6 +108,19 @@ def generate_symbol_table(libpaths, frameworkpaths):
 
             for symbol in symbols:
                 symbolTable[symbol].add(Framework(frameworkname))
+
+            sublibdir = os.path.join(filename, "Versions", "Current", "Libraries")
+            for (root, subdirs, files) in os.walk(sublibdir):
+                for file in files:
+                    sublibfilename = os.path.join(root, file)
+
+                    libsymbols = library_symbols(sublibfilename)
+
+                    if not libsymbols:
+                        continue
+
+                    for sym in libsymbols:
+                        symbolTable[sym].add(Framework(frameworkname))
 
     return symbolTable
 

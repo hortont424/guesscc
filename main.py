@@ -23,10 +23,11 @@ for symbol in wantSymbols:
     if len(libsContaining) > 1:
         print "Conflict for symbol '{0}':".format(symbol), libsContaining
         libnames = [lib.name for lib in libsContaining]
+        #TODO: prefer Frameworks over libraries
         if "System" in libnames:
             libsContaining = set([Library("System")])
         else:
-            libsContaining = set([libsContaining[0]])
+            libsContaining = set([libsContaining.pop()])
         print "Choosing:", libsContaining
 
     neededLibs |= libsContaining

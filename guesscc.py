@@ -14,4 +14,5 @@ compilercmd = "gcc "
 compilercmd += " ".join([lib.generate_args() for lib in neededLibs]) + " "
 compilercmd += " ".join(filenames)
 
+print compilercmd
 os.system(compilercmd)

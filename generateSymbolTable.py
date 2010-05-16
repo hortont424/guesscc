@@ -58,8 +58,10 @@ def libname_from_filename(filename):
     return libname
 
 def file_is_library(filename):
-    # TODO: adjust to accept elf, etc.
+    # TODO: adjust to accept other library formats, etc.
     if ms.file(filename).find("Mach-O") >= 0:
+        return True
+    if ms.file(filename).find("ELF") >= 0:
         return True
 
     return False

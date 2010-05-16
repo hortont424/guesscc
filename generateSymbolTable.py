@@ -67,5 +67,12 @@ def generate_symbol_table(libpaths, frameworkpaths):
 
     return symbolTable
 
+def generate_default_symbol_table():
+    libpaths = ["/usr/lib", "/usr/local/lib"]
+    frameworkpaths = ["/System/Library/Frameworks", "/Library/Frameworks",
+        os.path.expanduser("~/Library/Frameworks")]
+
+    return generate_symbol_table(libpaths, frameworkpaths)
+
 if __name__ == "__main__":
-    print generate_symbol_table(["/usr/lib", "/usr/local/lib"], ["/System/Library/Frameworks", "/Library/Frameworks"])
+    print generate_default_symbol_table()

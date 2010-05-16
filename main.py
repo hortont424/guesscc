@@ -6,7 +6,7 @@ from scanner import scan_source_file
 filename = "symbolScanner.c"
 filename = "/Users/hortont/src/particles/Libraries/libcomputer/COBuffer.c"
 
-symbolTable = generate_symbol_table(["/usr/lib", "/usr/local/lib"], ["/System/Library/Frameworks", "/Library/Frameworks"])
+symbolTable = generate_default_symbol_table()
 neededLibs = set()
 
 for symbol in scan_source_file(filename):

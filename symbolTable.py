@@ -5,6 +5,7 @@ import magic
 from subprocess import Popen, PIPE
 from collections import defaultdict
 from glob import glob
+from cPickle import dump, load
 
 ms = magic.open(magic.MAGIC_NONE)
 ms.load()
@@ -127,11 +128,20 @@ def generate_symbol_table(libpaths, frameworkpaths):
     return symbolTable
 
 def generate_default_symbol_table():
-    libpaths = ["/usr/lib", "/usr/local/lib", "/opt/local/lib"]
+    libpaths = ["/usr/lib", "/usr/local/lib"]#, "/opt/local/lib"]
     frameworkpaths = ["/System/Library/Frameworks", "/Library/Frameworks",
         os.path.expanduser("~/Library/Frameworks")]
 
     return generate_symbol_table(libpaths, frameworkpaths)
 
+def load_symbol_table():
+    symbolTableFile = open("symbolTable.dat", "r")
+    symbolTable = load(symbolTableFile)
+    symbolTableFile.close()
+    return symbolTable
+
 if __name__ == "__main__":
-    print generate_default_symbol_table()
+    symbolTable = generate_default_symbol_table()
+    symbolTableFile = open("symbolTable.dat", "w")
+    dump(symbolTable, symbolTableFile)
+    symbolTableFile.close()

@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
-from generateSymbolTable import generate_default_symbol_table, Library, Framework
+from symbolTable import load_symbol_table, Library, Framework
 from scanner import scan_source_files
 from glob import glob
 
 filenames = ["symbolScanner.c"]
 filenames = glob("/Users/hortont/Desktop/particles/*.c")
 
-symbolTable = generate_default_symbol_table()
+symbolTable = load_symbol_table()
 (wantSymbols, haveSymbols) = scan_source_files(filenames)
 neededLibs = set()
 

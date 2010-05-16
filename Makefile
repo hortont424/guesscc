@@ -2,8 +2,11 @@
 
 LDFLAGS = -lclang
 
-all: symbolScanner
+all: symbolScanner symbolTable.dat
 
 clean:
-	rm *.pyc
-	rm symbolScanner
+	rm -f *.pyc
+	rm -f symbolScanner
+
+symbolTable.dat: symbolTable.py
+	./symbolTable.py

@@ -2,7 +2,10 @@
 
 enum CXChildVisitResult foundChild(CXCursor cursor, CXCursor parent, CXClientData client_data)
 {
-    printf("%d", clang_getCursorLanguage(cursor));
+    if(clang_getCursorKind(cursor) == CXCursor_CallExpr)
+    {
+        printf("%s\n", clang_getCString(clang_getCursorSpelling(cursor)));
+    }
 
     return CXChildVisit_Recurse;
 }
@@ -14,7 +17,7 @@ int main()
     CXCursor cur;
 
     idx = clang_createIndex(1, 0);
-    tu = clang_createTranslationUnitFromSourceFile(idx, "test.c", 0, NULL, 0, NULL);
+    tu = clang_createTranslationUnitFromSourceFile(idx, "symbolScanner.c", 0, NULL, 0, NULL);
     cur = clang_getTranslationUnitCursor(tu);
 
     clang_visitChildren(cur, foundChild, NULL);

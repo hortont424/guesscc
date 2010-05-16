@@ -23,13 +23,23 @@ class SymbolSource(object):
     def __repr__(self):
         return  "{0}({1})".format(type(self).__name__, self.name)
 
+    def generate_args(self):
+        print "Abstract function."
+        exit(0)
+
 class Library(SymbolSource):
     def __init__(self, name):
         super(Library, self).__init__(name)
 
+    def generate_args(self):
+        return "-l" + self.name
+
 class Framework(SymbolSource):
     def __init__(self, name):
         super(Framework, self).__init__(name)
+
+    def generate_args(self):
+        return "-framework " + self.name
 
 def list_library_symbols(filename):
     args = ["/usr/bin/nm", "-g", "-U", "-j", "-f", "-A", "-m", filename]

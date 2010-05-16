@@ -20,4 +20,4 @@ for symbol in scan_source_file(filename):
 
     neededLibs |= libsContaining
 
-print neededLibs
+print " ".join([lib.generate_args() for lib in neededLibs])

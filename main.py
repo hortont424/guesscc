@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from generateSymbolTable import generate_symbol_table
+from generateSymbolTable import generate_default_symbol_table
 from scanner import scan_source_file
 
 filename = "symbolScanner.c"

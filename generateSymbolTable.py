@@ -9,6 +9,28 @@ from glob import glob
 ms = magic.open(magic.MAGIC_NONE)
 ms.load()
 
+class SymbolSource(object):
+    def __init__(self, name):
+        super(SymbolSource, self).__init__()
+        self.name = name
+
+    def __hash__(self):
+        return self.name.__hash__()
+
+    def __eq__(self, other):
+        return self.name == other.name
+
+    def __repr__(self):
+        return  "{0}({1})".format(type(self).__name__, self.name)
+
+class Library(SymbolSource):
+    def __init__(self, name):
+        super(Library, self).__init__(name)
+
+class Framework(SymbolSource):
+    def __init__(self, name):
+        super(Framework, self).__init__(name)
+
 def list_library_symbols(filename):
     args = ["/usr/bin/nm", "-g", "-U", "-j", "-f", "-A", "-m", filename]
     symbols = Popen(args, stdout=PIPE, stderr=PIPE).communicate()[0].splitlines()
@@ -50,7 +72,7 @@ def generate_symbol_table(libpaths, frameworkpaths):
                 symbols = list_library_symbols(filename)
 
                 for symbol in symbols:
-                    symbolTable[symbol].add(libname)
+                    symbolTable[symbol].add(Library(libname))
 
     for frameworkpath in frameworkpaths:
         for filename in glob(os.path.join(frameworkpath, "*.framework")):
@@ -63,7 +85,7 @@ def generate_symbol_table(libpaths, frameworkpaths):
             symbols = list_library_symbols(libfilename)
 
             for symbol in symbols:
-                symbolTable[symbol].add("FRAMEWORK"+frameworkname)
+                symbolTable[symbol].add(Framework(frameworkname))
 
     return symbolTable
 

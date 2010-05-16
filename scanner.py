@@ -8,14 +8,21 @@ def scan_source_file(filename):
 
     wantSymbols = set()
     haveSymbols = set()
+    staticSymbols = set()
 
     for sym in scan:
         if sym[1:].startswith("__builtin") or sym[1:].startswith("__inline"):
             continue
         elif sym[0] == "+":
             haveSymbols.add(sym[1:])
+        elif sym[0] == "?":
+            staticSymbols.add(sym[1:])
         elif sym[0] == "-":
             wantSymbols.add(sym[1:])
+
+    for sym in staticSymbols:
+        if sym in wantSymbols:
+            wantSymbols.remove(sym)
 
     return (wantSymbols, haveSymbols)
 

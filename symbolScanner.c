@@ -11,7 +11,8 @@ enum CXChildVisitResult foundChild(CXCursor cursor, CXCursor parent, CXClientDat
     }
 
     if(clang_isDeclaration(clang_getCursorKind(cursor)) &&
-       clang_getCursorLinkage(cursor) == CXLinkage_External)
+       (clang_getCursorLinkage(cursor) == CXLinkage_External ||
+        clang_getCursorLinkage(cursor) == CXLinkage_Internal))
     {
         CXFile file;
         const char * filename, * wantFilename;
@@ -25,7 +26,10 @@ enum CXChildVisitResult foundChild(CXCursor cursor, CXCursor parent, CXClientDat
         if(!filename || strcmp(wantFilename, filename))
             return CXChildVisit_Recurse;
 
-        printf("+%s\n", clang_getCString(clang_getCursorSpelling(cursor)));
+        if(clang_getCursorLinkage(cursor) == CXLinkage_External)
+            printf("+%s\n", clang_getCString(clang_getCursorSpelling(cursor)));
+        else
+            printf("?%s\n", clang_getCString(clang_getCursorSpelling(cursor)));
     }
 
     return CXChildVisit_Recurse;

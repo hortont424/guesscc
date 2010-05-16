@@ -7,10 +7,10 @@ from chooseLibraries import choose_libraries
 #filenames = glob("/Users/hortont/Desktop/particles/*.c")
 filenames = ["/Users/hortont/Desktop/abgr.c"]
 
-(neededLibs, missingSymbols) = choose_libraries(filenames)
+(neededLibs, missingSymbols) = choose_libraries(filenames, debug=True)
 
-print
+
 for symbol in missingSymbols:
     print "Can't find symbol '{0}'.".format(symbol)
-print
+
 print " ".join([lib.generate_args() for lib in neededLibs])

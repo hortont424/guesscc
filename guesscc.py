@@ -10,6 +10,9 @@ filenames = ["/Users/hortont/Desktop/abgr.c"]
 
 (neededLibs, missingSymbols) = choose_libraries(filenames)
 
+for symbol in missingSymbols:
+    print "Can't find symbol '{0}'.".format(symbol)
+
 compilercmd = "gcc "
 compilercmd += " ".join([lib.generate_args() for lib in neededLibs]) + " "
 compilercmd += " ".join(filenames)
